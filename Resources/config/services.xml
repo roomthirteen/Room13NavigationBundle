@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+
+    <services>
+        <service id="room13.navigation.twig.extension" class="Room13\NavigationBundle\Twig\NavigationExtension">
+            <tag name="twig.extension" />
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+            <argument type="service" id="service_container"/>
+        </service>
+
+        <service id="room13.navigation.admin.navigation_node" class="Room13\NavigationBundle\Admin\NavigationNodeAdmin">
+            <tag name="sonata.admin" manager_type="orm" group="navigation" label="nodes"/>
+            <argument />
+            <argument>Room13\NavigationBundle\Entity\NavigationNode</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+            <call method="setTranslationDomain">
+                <argument>Room13NavigationBundle</argument>
+            </call>
+        </service>
+    </services>
+</container>
