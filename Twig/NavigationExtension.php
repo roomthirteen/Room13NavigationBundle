@@ -67,11 +67,44 @@ class NavigationExtension extends \Twig_Extension
         return $path === $node->getLink();
     }
 
+    public function isNodeVisibleToUser(NavigationNode $node)
+    {
+        if(!is_array($node->getVisibleFor()))
+        {
+            return true;
+        }
+
+        $security   = $this->container->get('security.context');
+        $token      = $security->getToken();
+        $visibleFor = $node->getVisibleFor();
+
+        if(!$token instanceof \Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken)
+        {
+            $roles = array('ROLE_ANONYMUS');
+        }
+        else
+        {
+            $roles = $token->getUser()->getRoles();
+        }
+
+
+        return count(array_intersect($visibleFor,$roles))>0;
+
+    }
+
     public function getFunctions()
     {
         return array(
             'room13_navigation_list' => new \Twig_Function_Method($this,'listNodes'),
-            'room13_navigation_node_active' => new \Twig_Function_Method($this,'isNodeActive'),
+        );
+    }
+
+
+    public function getFilters()
+    {
+        return array(
+            'room13_navigation_node_active'  => new \Twig_Filter_Method($this,'isNodeActive'),
+            'room13_navigation_node_visible' => new \Twig_Filter_Method($this,'isNodeVisibleToUser'),
         );
     }
 

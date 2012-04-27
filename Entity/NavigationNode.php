@@ -47,6 +47,14 @@ class NavigationNode
     private $link;
 
     /**
+     * @var string $link
+     *
+     * @ORM\Column(name="visible_for", type="array", nullable=true)
+     */
+
+    private $visibleFor;
+
+    /**
      * @var string $slug
      *
      * @Gedmo\Slug(fields={"title"})
@@ -100,6 +108,7 @@ class NavigationNode
         $this->path=null;
         $this->tooltip = null;
         $this->link = null;
+        $this->visibleFor = null;
     }
 
 
@@ -199,6 +208,16 @@ class NavigationNode
         return $this->parent;
     }
 
+    public function setVisibleFor(array $groups)
+    {
+        $this->visibleFor=$groups;
+    }
+
+    public function getVisibleFor()
+    {
+        return $this->visibleFor;
+    }
+
 
 
 
@@ -211,6 +230,7 @@ class NavigationNode
             $link       = isset($nodeDef[1]) ? $nodeDef[1] : '';
             $tooltip    = isset($nodeDef[2]) ? $nodeDef[2] : '';
             $children   = isset($nodeDef[3]) ? $nodeDef[3] : null;
+            $userGroups = isset($nodeDef[4]) ? $nodeDef[4] : null;
 
             $node = new self;
 
@@ -228,6 +248,11 @@ class NavigationNode
             if(is_array($children))
             {
                 $list = array_merge($list,self::fromArray($em,$children,$node));
+            }
+
+            if(is_array($userGroups))
+            {
+                $node->setVisibleFor($userGroups);
             }
 
             $em->flush();
