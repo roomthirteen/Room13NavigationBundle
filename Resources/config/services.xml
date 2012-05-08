@@ -12,7 +12,7 @@
             <argument type="service" id="service_container"/>
         </service>
 
-        <service id="room13.navigation.admin.navigation_node" class="Room13\NavigationBundle\Admin\NavigationNodeAdmin">
+        <!-- <service id="room13.navigation.admin.navigation_node" class="Room13\NavigationBundle\Admin\NavigationNodeAdmin">
             <tag name="sonata.admin" manager_type="orm" group="navigation" label="nodes"/>
             <argument />
             <argument>Room13\NavigationBundle\Entity\NavigationNode</argument>
@@ -20,6 +20,6 @@
             <call method="setTranslationDomain">
                 <argument>Room13NavigationBundle</argument>
             </call>
-        </service>
+        </service>  -->
     </services>
 </container>
